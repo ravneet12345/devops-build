@@ -1,2 +1,0 @@
-﻿New build trigger test
-New build trigger test
