@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Copy custom static website files into the nginx web directory
-COPY build/. /usr/share/nginx/html
+COPY . /usr/share/nginx/html
 
 # Expose port 80 to the outside world
 EXPOSE 80
