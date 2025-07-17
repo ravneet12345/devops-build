@@ -10,13 +10,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github', url: 'https://github.com/your-repo.git', branch: 'dev'
+                git credentialsId: 'github', url: 'https://github.com/ravneet12345/devops-build.git', branch: 'dev'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME .'
+                sh 'docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME:latest .'
             }
         }
 
@@ -25,7 +25,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS_ID}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         echo "$PASSWORD" | docker login -u "$USERNAME" --password-stdin
-                        docker push $USERNAME/$IMAGE_NAME
+                        docker push $USERNAME/$IMAGE_NAME:latest
                     '''
                 }
             }
@@ -33,7 +33,7 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                sh 'docker rmi $DOCKERHUB_USERNAME/$IMAGE_NAME || true'
+                sh 'docker rmi $DOCKERHUB_USERNAME/$IMAGE_NAME:latest || true'
             }
         }
     }
